@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nutri Recipe Finder</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input, button { padding: 8px; font-size: 16px; }
+        .recipe { margin-top: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px; display: flex; gap: 15px; }
+        .recipe img { border-radius: 8px; width: 150px; height: auto; }
+        .recipe-details { max-width: 700px; }
+        ul { margin-top: 0; }
+        h4 { margin-bottom: 5px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <h1>Nutri Recipe Finder</h1>
+    <form method="POST">
+        <input type="text" name="ingredients" placeholder="Enter ingredients, comma separated" style="width: 300px;" required />
+        <button type="submit">Find Recipes</button>
+    </form>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    {% if recipes %}
+        <h2>Recipes:</h2>
+        {% for r in recipes %}
+            <div class="recipe">
+                {% if r.image %}
+                    <img src="{{ r.image }}" alt="{{ r.title }}" />
+                {% endif %}
+                <div class="recipe-details">
+                    <h3><a href="{{ r.link }}" target="_blank">{{ r.title }}</a></h3>
+                    <p><strong>Calories:</strong> {{ r.calories }}</p>
+                    <p><strong>Carbs:</strong> {{ r.carbs }}</p>
+                    <p><strong>Fat:</strong> {{ r.fat }}</p>
+                    <p><strong>Protein:</strong> {{ r.protein }}</p>
+
+                    <h4>Ingredients:</h4>
+                    <ul>
+                        {% for ingredient in r.ingredients %}
+                            <li>{{ ingredient }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h4>Instructions:</h4>
+                    <p>{{ r.instructions|safe }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
